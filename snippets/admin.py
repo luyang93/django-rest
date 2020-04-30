@@ -1,1 +1,1 @@
-# Register your models here.
+# -*- coding: utf-8 -*-
