@@ -33,4 +33,10 @@ urlpatterns += format_suffix_patterns([
     path('users_class/', views.UserList.as_view(), name='UserList'),
     path('users_class/<int:pk>/', views.UserDetail.as_view(), name='UserDetail'),
 
+    path('snippets_mixin/', views.SnippetListMixin.as_view(), name='SnippetListMixin'),
+    path('snippets_mixin/<int:pk>/', views.SnippetDetailMixin.as_view(), name='SnippetDetailMixin'),
+    path('snippets_mixin/<int:pk>/highlight/', views.SnippetHighlightMixin.as_view(), name='SnippetHighlightMixin'),
+    path('users_mixin/', views.UserListMixin.as_view(), name='UserListMixin'),
+    path('users_mixin/<int:pk>/', views.UserDetailMixin.as_view(), name='UserLDetailMixin'),
+
 ])
