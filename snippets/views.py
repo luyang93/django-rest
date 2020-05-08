@@ -27,6 +27,8 @@ def api_root(request, format=None):
         'users_mixin': reverse('UserListMixin', request=request, format=format),
         'snippets_generics': reverse('SnippetListGenerics', request=request, format=format),
         'users_generics': reverse('UserListGenerics', request=request, format=format),
+        'snippets_viewset': reverse('snippet_list', request=request, format=format),
+        'users_viewset': reverse('user_list', request=request, format=format),
     })
 
 
@@ -479,3 +481,29 @@ class UserDetailGenerics(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
 
+class SnippetViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide an extra `highlight` action.
+    """
+    queryset = Snippet.objects.all()
+    serializer_class = SnippetSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+    @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
+        snippet = self.get_object()
+        return Response(snippet.highlighted)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides `list` and `detail` actions.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

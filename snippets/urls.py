@@ -7,6 +7,26 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from snippets import views
 from snippets.views import SnippetViewSet, UserViewSet, api_root
 
+snippet_list_viewset = SnippetViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+snippet_detail_viewset = SnippetViewSet.as_view({
+    'get': 'retrieve',
+    'post': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
+snippet_highlight = SnippetViewSet.as_view({
+    'get': 'highlight',
+}, renderer_classes=[renderers.StaticHTMLRenderer])
+user_list_viewset = UserViewSet.as_view({
+    'get': 'list'
+})
+user_detail_viewset = UserViewSet.as_view({
+    'get': 'retrieve'
+})
+
 urlpatterns = [
     path('snippets/', views.snippet_list),
     path('snippets/<int:pk>/', views.snippet_detail),
@@ -45,4 +65,9 @@ urlpatterns += format_suffix_patterns([
     path('users_generics/', views.UserListGenerics.as_view(), name='UserListGenerics'),
     path('users_generics/<int:pk>/', views.UserDetailGenerics.as_view(), name='UserDetailGenerics'),
 
+    path('snippets_viewset/', snippet_list_viewset, name='snippet_list'),
+    path('snippets_viewset/<int:pk>/', snippet_detail_viewset, name='snippet_detail'),
+    path('snippets_viewset/<int:pk>/highlight/', snippet_highlight, name='snippet_highlight'),
+    path('users_viewset/', user_list_viewset, name='user_list'),
+    path('users_viewset/<int:pk>/', user_detail_viewset, name='user_detail'),
 ])
