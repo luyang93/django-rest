@@ -27,4 +27,10 @@ urlpatterns += format_suffix_patterns([
     path('users_apiview/', views.user_list_apiview, name='user_list_apiview'),
     path('users_apiview/<int:pk>/', views.user_detail_apiview, name='user_detail_apiview'),
 
+    path('snippets_class/', views.SnippetList.as_view(), name='SnippetList'),
+    path('snippets_class/<int:pk>/', views.SnippetDetail.as_view(), name='SnippetDetail'),
+    path('snippets_class/<int:pk>/highlight/', views.SnippetHighlight.as_view(), name='SnippetHighlight'),
+    path('users_class/', views.UserList.as_view(), name='UserList'),
+    path('users_class/<int:pk>/', views.UserDetail.as_view(), name='UserDetail'),
+
 ])
