@@ -25,6 +25,8 @@ def api_root(request, format=None):
         'users_class': reverse('UserList', request=request, format=format),
         'snippets_mixin': reverse('SnippetListMixin', request=request, format=format),
         'users_mixin': reverse('UserListMixin', request=request, format=format),
+        'snippets_generics': reverse('SnippetListGenerics', request=request, format=format),
+        'users_generics': reverse('UserListGenerics', request=request, format=format),
     })
 
 
@@ -429,5 +431,51 @@ class UserDetailMixin(mixins.RetrieveModelMixin,
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+
+class SnippetListGenerics(generics.ListCreateAPIView):
+    """
+    List all snippets, or create a new snippet.
+    """
+    queryset = Snippet.objects.all()
+    serializer_class = SnippetSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class SnippetDetailGenerics(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    queryset = Snippet.objects.all()
+    serializer_class = SnippetSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+
+class SnippetHighlightGenerics(generics.GenericAPIView):
+    queryset = Snippet.objects.all()
+    renderer_classes = [renderers.StaticHTMLRenderer]
+
+    def get(self, request, *args, **kwargs):
+        snippet = self.get_object()
+        return Response(snippet.highlighted)
+
+
+class UserListGenerics(generics.ListCreateAPIView):
+    """
+    List all users, or create a new users.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetailGenerics(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a user instance.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
