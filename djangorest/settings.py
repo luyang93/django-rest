@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for djangorest project.
 
@@ -22,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '%=t84kuo)y6=twflkd4ww3uz#6tm^^t$n0p91#m(c%g6a6qd78'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
