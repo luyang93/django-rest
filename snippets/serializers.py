@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from snippets.models import Snippet
+
+User = get_user_model()
 
 
 class SnippetSerializer(serializers.ModelSerializer):
@@ -20,5 +22,5 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['url', 'id', 'username', 'snippets']
+        fields = ['url', 'id', 'name', 'snippets']
         extra_kwargs = {'url': {'view_name': 'user_detail'}}
