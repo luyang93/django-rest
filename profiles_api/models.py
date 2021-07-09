@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
@@ -66,3 +67,21 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         Return string representation of our user
         """
         return self.email
+
+
+class ProfileFeedItem(models.Model):
+    """
+    Profile status update
+    """
+    user_profile = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE
+    )
+    status_text = models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        """
+        Return the model as a string
+        """
+        return self.status_text
